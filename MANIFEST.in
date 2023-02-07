@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include khetan_app *.css
+recursive-include khetan_app *.csv
+recursive-include khetan_app *.html
+recursive-include khetan_app *.ico
+recursive-include khetan_app *.js
+recursive-include khetan_app *.json
+recursive-include khetan_app *.md
+recursive-include khetan_app *.png
+recursive-include khetan_app *.py
+recursive-include khetan_app *.svg
+recursive-include khetan_app *.txt
+recursive-exclude khetan_app *.pyc
