@@ -202,4 +202,12 @@ fixtures=[
             ]
         ]
     ]},
+    {"dt": "Print Format", "filters": [
+        [
+            "module", "in", [
+                "khetan_app"
+            ]
+        ]
+    ]},
+
 ]
