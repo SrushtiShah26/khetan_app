@@ -1,0 +1,153 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-02-08 12:05:19.311790",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "purpose",
+  "sales_invoice",
+  "purchase_invoice",
+  "voucher_no",
+  "returnable_or_non_returnable",
+  "party_name",
+  "partys_name",
+  "received_by",
+  "non_payment_item",
+  "column_break_j6mp4",
+  "date_time",
+  "use_for",
+  "vehicle_no",
+  "section_break_ixkt1",
+  "purchase_inward_table",
+  "remark",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Select",
+   "label": "Purpose",
+   "options": "\nPurchase Inward\nSales Outward\nReturnable Or Non Returnable Transfer Material\nReturnable Received Material\nPurchase Return"
+  },
+  {
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "label": "Sales Invoice",
+   "options": "Sales Invoice"
+  },
+  {
+   "fieldname": "purchase_invoice",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice",
+   "options": "Purchase Invoice"
+  },
+  {
+   "fieldname": "voucher_no",
+   "fieldtype": "Link",
+   "label": "Voucher No",
+   "options": "Stock Entry"
+  },
+  {
+   "fieldname": "returnable_or_non_returnable",
+   "fieldtype": "Data",
+   "label": "Returnable Or Non Returnable"
+  },
+  {
+   "fieldname": "party_name",
+   "fieldtype": "Link",
+   "label": "Party Name",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "partys_name",
+   "fieldtype": "Link",
+   "label": "Party Name",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "received_by",
+   "fieldtype": "Link",
+   "label": "Received By",
+   "options": "Employee"
+  },
+  {
+   "default": "0",
+   "fieldname": "non_payment_item",
+   "fieldtype": "Check",
+   "label": "Non Payment Item"
+  },
+  {
+   "fieldname": "column_break_j6mp4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date_time",
+   "fieldtype": "Datetime",
+   "label": "Date Time"
+  },
+  {
+   "fieldname": "use_for",
+   "fieldtype": "Select",
+   "label": "Use For",
+   "options": "\nOffice\nPlant\nStore\nOther"
+  },
+  {
+   "fieldname": "vehicle_no",
+   "fieldtype": "Data",
+   "label": "Vehicle No."
+  },
+  {
+   "fieldname": "section_break_ixkt1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "purchase_inward_table",
+   "fieldtype": "Table",
+   "label": "Gatepass Item",
+   "options": "Gatepass Item"
+  },
+  {
+   "fieldname": "remark",
+   "fieldtype": "Long Text",
+   "label": "Remark"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "GatePass",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2023-02-08 12:05:19.311790",
+ "modified_by": "Administrator",
+ "module": "khetan_app",
+ "name": "GatePass",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
