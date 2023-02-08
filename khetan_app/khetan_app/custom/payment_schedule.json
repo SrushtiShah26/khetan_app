@@ -38,7 +38,7 @@
    "label": "Credit Days",
    "length": 0,
    "mandatory_depends_on": null,
-   "modified": "2023-02-08 12:36:28.806220",
+   "modified": "2023-02-08 13:19:48.744509",
    "modified_by": "srushti@sanskartechnolab.com",
    "module": "khetan_app",
    "name": "Payment Schedule-credit_days",
