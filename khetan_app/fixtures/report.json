@@ -1,0 +1,522 @@
+[
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disable_prepared_report": 0,
+  "disabled": 1,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Khetan Logo",
+  "modified": "2023-02-08 13:41:45.637670",
+  "module": "khetan_app",
+  "name": "Stock Report",
+  "prepared_report": 0,
+  "query": "SELECT\np.name as \"ID:Link/Stock Entry\", p.stock_entry_type as StockEntryType, p.posting_date,p.company as company,q.item_code as ItemCode, (q.qty) as Qty,q.t_warehouse as Warehouse\nFROM\n`tabStock Entry` p\nINNER JOIN\n`tabStock Entry Detail` q ON q.parent = p.name\nWHERE\nNOT p.stock_entry_type = 'Material Transfer'\nAND NOT p.stock_entry_type = 'Material Receipt'\nAND NOT p.stock_entry_type = 'Material Transfer for Manufacture'\nAND NOT p.stock_entry_type = 'Material Consumption for Manufacture'\nAND NOT p.stock_entry_type = 'Material Issue'\nAND NOT p.stock_entry_type = 'Material Transfer'\nAND NOT p.stock_entry_type = 'Repack'\nAND NOT p.stock_entry_type = 'Send To Subcontractor'\nAND q.item_code = %(item_code)s\n",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Stock Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Stock Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Stock Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Stock Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Stock Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disable_prepared_report": 0,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "fieldname": "party_name_",
+    "fieldtype": "Link",
+    "label": "Party Name",
+    "mandatory": 1,
+    "options": "Supplier",
+    "parent": "Material Transfer For Supplier",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Material Transfer For Supplier",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Material Transfer For Supplier",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Khetan Logo",
+  "modified": "2023-02-08 13:41:45.602551",
+  "module": "khetan_app",
+  "name": "Material Transfer For Supplier",
+  "prepared_report": 0,
+  "query": "WITH voucher AS(\r    SELECT\r       `tabStock Entry`.name,\r        `tabStock Entry`.voucher_no,\r        `tabStock Entry`.returnable_or_non_returnable,\r        `tabStock Entry`.received_qty,\r         vd.qty,\r         vd.pending_qty_material_received,\r         `tabStock Entry`.posting_date\r        \r    from\r        `tabStock Entry`\r        inner join `tabStock Entry Detail` as vd on  `tabStock Entry`.name = vd.parent\r    where\r        stock_entry_type ='Material Received for Supplier'\r        \r)\rselect\r    se.stock_entry_type as 'Stock Entry Type',\r    se.party_name_ as 'Party Name',\r    se.name as 'Voucher No:Link/Stock Entry',\r    se.posting_date as 'Material Transfer Date',\r    se.returnable_or_non_returnable as 'Returnable Or Non Returnable',\r    sed.item_code as 'Item Name',\r    voucher.received_qty as 'In Qty',\r    voucher.qty as 'Out Qty',\r    voucher.pending_qty_material_received as 'Balance Qty',\r    voucher.name as 'Material Received For Supplier:Link/Stock Entry',\r    voucher.posting_date as 'Material Received Date'\r    \r  \rfrom\r    voucher,\r    `tabStock Entry` se\r    join `tabStock Entry Detail` sed\ron sed.parent=se.name\rwhere\r    se.stock_entry_type = 'Material Transfer for Supplier'\r    and voucher.voucher_no = se.name\r         AND\r     se.`party_name_` = %(party_name_)s\r    and (\r       DATE(se.posting_date) between %(from_date) s\r       and %(to_date) s\r   )\runion\rselect\r    se.stock_entry_type,\r    se.party_name_,\r    se.name as 'Voucher No:Link/Stock Entry',\r    se.posting_date as 'Material Transfer Date',\r    se.returnable_or_non_returnable,\r    sed.item_code as 'Item Name',\r    null,\r    null,\r    null,\r    null,\r    null\r   \r    \rfrom\r    voucher,\r    `tabStock Entry` se\r    join `tabStock Entry Detail` sed\ron sed.parent=se.name\rwhere\r    se.stock_entry_type =  'Material Transfer for Supplier'\r    and se.returnable_or_non_returnable = 'Returnable'\r    and se.docstatus = 1\r    and voucher.voucher_no != se.name\r     AND\r     se.`party_name_` = %(party_name_)s\r     and (\r       DATE(se.posting_date) between %(from_date) s\r       and %(to_date) s\r   )\runion\rselect\r    se.stock_entry_type,\r    se.party_name_,\r    se.name,\r    se.posting_date as 'Material Transfer Date',\r    se.returnable_or_non_returnable,\r    sed.item_code as 'Item Code',\r    null,\r    null,\r    null,\r    null,\r    null\r   \rfrom\r    voucher,\r    `tabStock Entry` se\r    join `tabStock Entry Detail` sed\ron sed.parent=se.name\rwhere\r    se.name in(\r        select\r            name\r        from\r            `tabStock Entry`\r        where\r            returnable_or_non_returnable = 'Non Returnable'\r             AND\r     se.`party_name_` = %(party_name_)s\r            and (\r       DATE(se.posting_date) between %(from_date) s\r       and %(to_date) s\r   )\r    )\r    and se.docstatus = 1\r   ",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Material Transfer For Supplier",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Material Transfer For Supplier",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Material Transfer For Supplier",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Material Transfer For Supplier",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Material Transfer For Supplier",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disable_prepared_report": 0,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "fieldname": "party",
+    "fieldtype": "Link",
+    "label": "Party Name",
+    "mandatory": 1,
+    "options": "Customer",
+    "parent": "Subcontracting Received Material",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Subcontracting Received Material",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Subcontracting Received Material",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Khetan Logo",
+  "modified": "2023-02-08 13:41:45.615723",
+  "module": "khetan_app",
+  "name": "Subcontracting Received Material",
+  "prepared_report": 0,
+  "query": "WITH delivery AS(\r    SELECT\r     `tabDelivery Note`.name,\r     `tabDelivery Note`.customer,\r      `tabDelivery Note`.total_qty,\r       vd.item_name\r   from\r        `tabDelivery Note`\r        inner join `tabDelivery Note Item` as vd on `tabDelivery Note`.name = vd.parent\r    \r)\rselect\r    se.stock_entry_type as 'Stock Entry Type',\r    se.party,\r    delivery.name as 'Delivery Note:Link/Delivery Note',\r    delivery.item_name as 'Transfer Material',\r    delivery.total_qty as'Out Qty',\r    sed.item_name as 'Received Material',\r    sed.qty as 'In Qty',\r    sed.pending_qty as 'Balance Qty',\r    se.name as 'Stock Entry :Link/Stock Entry',\r    se.posting_date as 'Date'\r \r    \r    \r  \rfrom\r    delivery,\r    `tabStock Entry` se\r    join `tabStock Entry Detail` sed\r    on sed.parent=se.name\rwhere\r    se.docstatus =1\r     AND\r     se.`party` = %(party)s\r     \r     and (\r       DATE(se.posting_date) between %(from_date) s\r       and %(to_date) s\r   )\r    \r    and delivery.name = se.delivery_note\r   ",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Subcontracting Received Material",
+  "report_script": "",
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Subcontracting Received Material",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Subcontracting Received Material",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Subcontracting Received Material",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Subcontracting Received Material",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [
+   {
+    "fieldname": "p.item_code",
+    "fieldtype": "Data",
+    "label": "Item Code",
+    "options": null,
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 100
+   },
+   {
+    "fieldname": "p.grade",
+    "fieldtype": "Data",
+    "label": "Grade",
+    "options": null,
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 0
+   },
+   {
+    "fieldname": "p.item_type",
+    "fieldtype": "Data",
+    "label": "Item Type",
+    "options": null,
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 0
+   },
+   {
+    "fieldname": "p.shape_type",
+    "fieldtype": "Data",
+    "label": "Shape Type",
+    "options": null,
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 150
+   },
+   {
+    "fieldname": "p.size",
+    "fieldtype": "Data",
+    "label": "Size",
+    "options": null,
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 200
+   },
+   {
+    "fieldname": "p.thickness",
+    "fieldtype": "Data",
+    "label": "Thickness",
+    "options": null,
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 0
+   },
+   {
+    "fieldname": "p.weight_per_unit",
+    "fieldtype": "Data",
+    "label": "Weight",
+    "options": null,
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 0
+   },
+   {
+    "fieldname": "q.master_price",
+    "fieldtype": "Data",
+    "label": "Master Price",
+    "options": null,
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 100
+   }
+  ],
+  "disable_prepared_report": 0,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "fieldname": "p.item_main",
+    "fieldtype": "Select",
+    "label": "Item Type",
+    "mandatory": 1,
+    "options": "Baluster\nPillar",
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Khetan Logo",
+  "modified": "2023-02-08 13:41:45.473493",
+  "module": "khetan_app",
+  "name": "Baluster & Pilar master report",
+  "prepared_report": 0,
+  "query": "Select p.item_code as \"Item Code\", p.grade as \"Grade\",p.item_type as \"Item Type\", p.shape_type as \"Shape Type\",p.size as \"Size\", p.thickness as \"Thickness\", p.weight_per_unit as \"Weight\", q.master_price as \"Price\"\nFrom `tabItem` p\njoin\n`tabItem Type` q on p.item_type=q.name\nwhere\nnot p.item_type = \"Pipe 202\"\nAND not p.item_type = \"Pipe 304\"\nAND not p.item_type = \"Pipe 316\"\nAND not p.item_type = \"Sheet 202\"\nAND not p.item_type = \"Sheet 304\"\nAND\np.item_main = %(p.item_main)s",
+  "ref_doctype": "Item",
+  "reference_report": null,
+  "report_name": "Baluster & Pilar master report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "All"
+   },
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "Baluster & Pilar master report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [
+   {
+    "fieldname": "p.machine",
+    "fieldtype": "Data",
+    "label": "Machine",
+    "options": null,
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 150
+   },
+   {
+    "fieldname": " q.item_code",
+    "fieldtype": "Data",
+    "label": "Item",
+    "options": null,
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 200
+   },
+   {
+    "fieldname": " finish.qty",
+    "fieldtype": "Data",
+    "label": "Finish",
+    "options": null,
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 120
+   },
+   {
+    "fieldname": "scrap.qty",
+    "fieldtype": "Data",
+    "label": "Scrap",
+    "options": null,
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 120
+   },
+   {
+    "fieldname": " reject.qty",
+    "fieldtype": "Data",
+    "label": "Reject",
+    "options": null,
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 120
+   },
+   {
+    "fieldname": "p.operator",
+    "fieldtype": "Data",
+    "label": "Operator",
+    "options": null,
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "columns",
+    "parenttype": "Report",
+    "width": 200
+   }
+  ],
+  "disable_prepared_report": 0,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "fieldname": "p.posting_date",
+    "fieldtype": "Date",
+    "label": "Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "fieldname": "p.stock_entry_type",
+    "fieldtype": "Select",
+    "label": "Stock Entry Type",
+    "mandatory": 1,
+    "options": "Manufacturing",
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Khetan Logo",
+  "modified": "2023-02-08 13:41:45.582499",
+  "module": "khetan_app",
+  "name": "Daily Production Report Unit-1",
+  "prepared_report": 0,
+  "query": "with\nfinish as(Select fq.qty,fq.parent from `tabStock Entry` fp inner join `tabStock Entry Detail` fq on fq.parent = fp.name\nwhere fq.is_finished__item = 1 AND fp.stock_entry_type = \"Manufacturing\"),\n\nscrap as(Select sq.qty,sq.parent from `tabStock Entry` sp inner join `tabStock Entry Detail` sq on sq.parent = sp.name\nwhere sq.is_scrap_item= 1 AND sp.stock_entry_type = \"Manufacturing\"),\n\nreject as(Select rq.qty,rq.parent from `tabStock Entry` rp inner join `tabStock Entry Detail` rq on rq.parent = rp.name\nwhere rq.rejected_item = 1 AND rp.stock_entry_type = \"Manufacturing\")\n\nSelect p.machine, q.item_code as \"Item Code\",finish.qty as \"Finished Qty\",scrap.qty as \"Scrap Qty\", reject.qty as \"Reject Qty\",p.operator\nfrom `tabStock Entry` p\ninner join\n`tabStock Entry Detail` q on q.parent = p.name\njoin\nfinish on finish.parent=p.name\njoin\nscrap on scrap.parent=p.name\njoin\nreject on reject.parent=p.name\n\nwhere\nq.s_warehouse is not null AND p.stock_entry_type =\"Manufacturing\"\nAND\np.posting_date = %(p.posting_date)s\nAND\np.stock_entry_type = %(p.stock_entry_type)s\n",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Daily Production Report Unit-1",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Daily Production Report Unit-1",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   }
+  ]
+ }
+]
