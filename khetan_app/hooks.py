@@ -190,3 +190,17 @@ app_license = "MIT"
 # auth_hooks = [
 #	"khetan_app.auth.validate"
 # ]
+fixtures=[
+    # "Client Script","Item","Website Theme"
+
+     {"dt": "Client Script", },
+     {"dt": "Server Script", },
+
+    #  {"dt": "Web Template", "filters": [
+    #     [
+    #         "name", "in", [
+    #             "Migoo Footer","Migoo Navbar"
+    #         ]
+    #     ]
+    # ]},
+]
