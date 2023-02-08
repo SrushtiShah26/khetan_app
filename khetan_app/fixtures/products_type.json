@@ -1,0 +1,58 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Products Type",
+  "modified": "2023-02-08 10:48:10.386713",
+  "name": "Sliding Roller",
+  "product_name": "Sliding Roller"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Products Type",
+  "modified": "2023-02-08 10:48:36.854944",
+  "name": "Door Knob Lock",
+  "product_name": "Door Knob Lock"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Products Type",
+  "modified": "2023-02-08 10:49:01.548626",
+  "name": "Multipurpose Lock",
+  "product_name": "Multipurpose Lock"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Products Type",
+  "modified": "2023-02-08 10:49:22.851447",
+  "name": "Slim Tandem Box",
+  "product_name": "Slim Tandem Box"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Products Type",
+  "modified": "2023-02-08 10:49:56.632580",
+  "name": "Gas Spring",
+  "product_name": "Gas Spring"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Products Type",
+  "modified": "2023-02-08 10:50:28.261582",
+  "name": "Door Closer",
+  "product_name": "Door Closer"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Products Type",
+  "modified": "2023-02-08 10:50:41.860020",
+  "name": "Hinge",
+  "product_name": "Hinge"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Products Type",
+  "modified": "2023-02-08 10:50:53.699568",
+  "name": "Channel",
+  "product_name": "Channel"
+ }
+]

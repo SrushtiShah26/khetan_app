@@ -187,7 +187,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"jignasa.chavda@sanskartechnolab.in\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Attendance",
@@ -287,7 +286,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"jignasa.chavda@sanskartechnolab.in\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Timesheet",
@@ -354,7 +352,6 @@
   "view": "Form"
  },
  {
-  "_liked_by": "[\"jignasa.chavda@sanskartechnolab.in\"]",
   "docstatus": 0,
   "doctype": "Client Script",
   "dt": "Payroll Entry",

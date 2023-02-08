@@ -195,7 +195,7 @@ fixtures=[
 
      {"dt": "Client Script", },
      {"dt": "Server Script", },
-
+     {"dt": "Products Type", },
     #  {"dt": "Web Template", "filters": [
     #     [
     #         "name", "in", [
