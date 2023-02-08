@@ -195,11 +195,11 @@ fixtures=[
 
      {"dt": "Client Script", },
      {"dt": "Server Script", },
-    #  {"dt": "Web Template", "filters": [
-    #     [
-    #         "name", "in", [
-    #             "Migoo Footer","Migoo Navbar"
-    #         ]
-    #     ]
-    # ]},
+     {"dt": "Report", "filters": [
+        [
+            "module", "in", [
+                "khetan_app"
+            ]
+        ]
+    ]},
 ]
