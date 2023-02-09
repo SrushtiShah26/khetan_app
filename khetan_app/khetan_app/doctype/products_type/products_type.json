@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "autoname": "field:product_name",
  "creation": "2023-02-08 10:47:13.547258",
  "default_view": "List",
@@ -19,7 +20,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-08 10:47:26.673187",
+ "modified": "2023-02-09 12:52:37.666194",
  "modified_by": "Administrator",
  "module": "khetan_app",
  "name": "Products Type",

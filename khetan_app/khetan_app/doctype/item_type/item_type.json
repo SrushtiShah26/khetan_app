@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "creation": "2023-02-08 11:44:03.902148",
  "default_view": "List",
@@ -24,7 +25,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-08 11:44:03.902148",
+ "modified": "2023-02-09 12:52:37.551133",
  "modified_by": "Administrator",
  "module": "khetan_app",
  "name": "Item Type",

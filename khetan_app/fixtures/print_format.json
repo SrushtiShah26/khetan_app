@@ -186,7 +186,6 @@
   "standard": "No"
  },
  {
-  "_liked_by": "[]",
   "absolute_value": 0,
   "align_labels_right": 0,
   "css": ".print-format .table-bordered td, .print-format .table-bordered th {\r    border: 1px solid black;\r}\r.print-format th {\r    color: black;\r    font-weight: normal;\r    border-bottom-width: 1px !important;\r}\r.print-format .table-bordered {\r    border: 1px solid black;\r}\r.print-format td, .print-format th {\r    padding: 3px !important; \r    \r}",
